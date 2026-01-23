@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stress Emotion Detection - Home</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="detection-page" data-username="{{ username }}">
+
+     <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light py-3 fixed-top" style="background-color: darkblue;">
+        <div class="container-fluid content-wrapper" >
+           
+           <a class="navbar-brand fw-bold navbar-title" href="{{ url_for('home') }}" style="color:white">Stress Detector</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-2">
+                        <a class="btn button " href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn button" href="{{ url_for('register') }}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn button primary" href="{{ url_for('contact') }}">Contact-Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="index-container">
+        <h1 style="color: darkblue;font-style: italic;">Stress Emotion Detection</h1>
+        <div class="header-buttons">
+            <a href="{{ url_for('logout') }}" class="button secondary">Logout</a>
+            <a href="{{ url_for('admin_results') }}" class="button secondary">View All Results</a>
+            <a href="{{ url_for('home') }}" class="button secondary">Back to Home</a>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for category, message in messages %}
+                        <li class="flash-message {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <div class="patient-name-display">
+            <p><strong>Patient Name:</strong> <span id="displayedPatientName">{{ username }}</span></p>
+        </div>
+
+        <div class="webcam-section">
+            <h2>Live Webcam Emotion Analysis (15 Seconds)</h2>
+            <div class="video-container">
+                <video id="webcamFeed" autoplay playsinline></video>
+                <canvas id="overlayCanvas"></canvas>
+            </div>
+            <button id="startCapture" class="button">Start 15s Analysis</button>
+            <button id="stopCapture" class="button danger hover-white"  disabled>Stop Analysis</button>
+            <p id="statusMessage"></p>
+            <p id="countdownDisplay"></p>
+        </div>
+
+        <div class="image-upload-section">
+            <h2>Single Image Stress Prediction</h2>
+            <div class="input-group">
+                <label for="imageUpload">Upload Image:</label>
+                <input type="file" id="imageUpload" accept="image/*">
+            </div>
+            <button id="uploadImageButton" class="button">Analyze Image</button>
+            <p id="imageStatus"></p>
+        </div>
+
+        <div class="video-upload-section">
+            <h2>Video Upload Emotion Analysis</h2>
+            <div class="input-group">
+                <label for="videoUpload">Upload Video:</label>
+                <input type="file" id="videoUpload" accept="video/*">
+            </div>
+            <button id="uploadVideoButton" class="button">Analyze Video</button>
+            <p id="videoStatus"></p>
+        </div>
+
+        <div id="results" class="results-section" style="display: none;">
+            <h2>Analysis Results</h2>
+            <p><strong>Status:</strong> <span id="autismStatus"></span></p>
+            <p><strong>Emotion Sequence:</strong> <span id="emotionSequence"></span></p>
+            <p><strong>Video Proof:</strong> <a id="videoLink" href="#" target="_blank">View Video</a></p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
